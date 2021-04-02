@@ -30,11 +30,11 @@ client.on('message', message => {
         embededMessage.createReactionCollector(filter, { time: 15000, dispose: true })
         .on('collect', (reaction, user) => {
           if (reaction.emoji.name === '👍') {
-            embededMessage.channel.send('You reacted with a thumbs up.');
+            embededMessage.channel.send(`🙋 <@${user.id}> is in!`);
           }
         })
         .on('remove', (reaction, user) => {
-          embededMessage.channel.send('Someone is out!');
+          embededMessage.channel.send(`😢 <@${user.id}> is out!`);
         })
         .on('end', collected => console.log(`Collected ${collected.size} items`));
       });
