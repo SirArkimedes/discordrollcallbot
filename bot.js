@@ -1,16 +1,11 @@
-const { Client, MessageEmbed, MessageReaction } = require('discord.js');
+const { Client, MessageEmbed } = require('discord.js');
 const auth = require('./auth.json');
+const commands = require('./commands.js');
 
 const client = new Client();
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
-});
-
-client.on('message', message => {
-  if (message.content === 'fuck you') {
-    message.channel.send('No fuck you');
-  }
 });
 
 client.on('message', message => {
@@ -21,7 +16,7 @@ client.on('message', message => {
       .setDescription('React to this message to mark that you\'re in for tonight!');
 
       message.channel.send(embed)
-      .then((embededMessage, something) => {
+      .then((embededMessage) => {
         embededMessage.react('👍');
 
         const filter = (reaction, user) => {
@@ -38,6 +33,8 @@ client.on('message', message => {
         })
         .on('end', collected => console.log(`Collected ${collected.size} items`));
       });
+    } else {
+      commands.attemptCommandEvaluation(message);
     }
   });
 
