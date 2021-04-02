@@ -11,20 +11,27 @@ client.on('ready', () => {
 
 client.on('message', message => {
   if (message.content === 'ping') {
-    const embed = new MessageEmbed()
-      .setTitle('Who\'s in?')
-      .setColor('0xffe000')
-      .setDescription('React to this message to mark that you\'re in or out for tonight!');
+    inOrOutPing(message);
+  } else {
+    commands.attemptCommandEvaluation(message);
+  }
+});
 
-      message.channel.send(embed)
-      .then((embededMessage) => {
-        embededMessage.react('👍');
-        embededMessage.react('👎');
+function inOrOutPing(message) {
+  const embed = new MessageEmbed()
+    .setTitle('Who\'s in?')
+    .setColor('0xffe000')
+    .setDescription('React to this message to mark that you\'re in or out for tonight!');
 
-        const filter = (reaction, user) => {
-          return ['👍', '👎'].includes(reaction.emoji.name) && user.id !== embededMessage.author.id;
-        };
-        embededMessage.createReactionCollector(filter, { time: 15000, dispose: true })
+  message.channel.send(embed)
+    .then((embededMessage) => {
+      embededMessage.react('👍');
+      embededMessage.react('👎');
+
+      const filter = (reaction, user) => {
+        return ['👍', '👎'].includes(reaction.emoji.name) && user.id !== embededMessage.author.id;
+      };
+      embededMessage.createReactionCollector(filter, { time: 15000, dispose: true })
         .on('collect', (reaction, user) => {
           if (reaction.emoji.name === '👍') {
             embededMessage.channel.send(`🙋 <@${user.id}> is in!`);
@@ -33,15 +40,10 @@ client.on('message', message => {
           }
         })
         .on('remove', (reaction, user) => {
-          if (reaction.emoji.name === '👍') {
-            embededMessage.channel.send(`😢 <@${user.id}> is out!`);
-          }
+          embededMessage.channel.send(`<@${user.id}> removed their choice!`);
         })
         .on('end', collected => console.log(`Collected ${collected.size} items`));
-      });
-    } else {
-      commands.attemptCommandEvaluation(message);
-    }
-  });
+    });
+};
 
 client.login(auth.token);
