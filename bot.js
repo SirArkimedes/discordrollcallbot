@@ -20,24 +20,11 @@ client.on('message', message => {
 function inOrOutPing(message) {
   readInFile(MENTION_LIST_FILE_PATH, (data) => {
     const mentionsList = JSON.parse(data);
-    var thoseToMention = '';
-    for (i = 0; i < mentionsList.length; i++) {
-      if (mentionsList.length != 1 && i == mentionsList.length - 1) {
-        thoseToMention += ' and '
-      }
-      
-      thoseToMention += `<@${mentionsList[i]}>`
-
-      if (mentionsList.length != 1 && i != mentionsList.length - 1 && mentionsList.length != 2) {
-        thoseToMention += ', '
-      }
-    }
-
     const embedMessage = new MessageEmbed()
       .setTitle('Who\'s in?')
       .setColor('0xffe000')
       .setDescription('React to this message to mark that you\'re in or out for tonight!');
-    const messageContent = `${thoseToMention} are you in?`;
+    const messageContent = `${commands.getHumanReadableMentionsList(mentionsList)} are you in?`;
 
     message.channel.send({ content: messageContent, embed: embedMessage })
       .then((embededMessage) => {
