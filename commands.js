@@ -1,4 +1,4 @@
-const { readInFile, writeFile, MENTION_LIST_FILE_PATH} = require('./file_reader.js');
+const { readInFile, writeFile, MENTION_LIST_FILE_PATH } = require('./file_reader.js');
 
 function attemptCommandEvaluation(message) {
     var messageContent = message.content;
