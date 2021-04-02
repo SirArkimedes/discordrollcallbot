@@ -20,26 +20,23 @@ client.on('message', message => {
       .setColor('0xffe000')
       .setDescription('React to this message to mark that you\'re in for tonight!');
 
-      message.channel.send(embed).then((sentMessage, something) => {
-        sentMessage.react('👍');
+      message.channel.send(embed)
+      .then((embededMessage, something) => {
+        embededMessage.react('👍');
+
         const filter = (reaction, user) => {
-          return ['👍', '👎'].includes(reaction.emoji.name);
+          return ['👍', '👎'].includes(reaction.emoji.name) && user.id !== embededMessage.author.id;
         };
-
-        sentMessage.awaitReactions(filter, { max: 2, time: 60000, errors: ['time'] })
-        .then(collected => {
-          const reaction = collected.first();
-          message.channel.send('Someone reacted.');
-
+        embededMessage.createReactionCollector(filter, { time: 15000, dispose: true })
+        .on('collect', (reaction, user) => {
           if (reaction.emoji.name === '👍') {
-            message.channel.send('you reacted with a thumbs up.');
-          } else {
-            message.channel.send('you reacted with a thumbs down.');
+            embededMessage.channel.send('You reacted with a thumbs up.');
           }
         })
-        .catch(collected => {
-          message.channel.send('you reacted with neither a thumbs up, nor a thumbs down.');
-        });
+        .on('remove', (reaction, user) => {
+          embededMessage.channel.send('Someone is out!');
+        })
+        .on('end', collected => console.log(`Collected ${collected.size} items`));
       });
     }
   });
