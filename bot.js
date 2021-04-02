@@ -10,7 +10,7 @@ client.on('ready', () => {
 });
 
 client.on('message', message => {
-  if (message.content === 'ping') {
+  if (message.content === `Who's in?`) {
     inOrOutPing(message);
   } else {
     commands.attemptCommandEvaluation(message);

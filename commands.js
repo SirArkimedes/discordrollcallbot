@@ -9,6 +9,8 @@ function attemptCommandEvaluation(message) {
         removeMemberFromMentionList(message);
     } else if (messageContent.startsWith('!showMentionsList')) {
         showMentionsList(message);
+    } else if (messageContent.startsWith('!ping')) {
+        ping(message);
     }
 };
 
@@ -65,6 +67,10 @@ function showMentionsList(message) {
             .setDescription(getHumanReadableMentionsList(mentionsList));
         message.channel.send(embedMessage);
     });
+}
+
+function ping(message) {
+    message.channel.send('PONG! but better than the other bots...');
 }
 
 function getHumanReadableMentionsList(mentionsList) {
