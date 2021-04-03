@@ -1,5 +1,7 @@
 const { MessageEmbed } = require('discord.js');
+
 const { readInFile, writeFile, MENTION_LIST_FILE_PATH } = require('./file_reader.js');
+const { getHumanReadableMentionsList } = require('./ping.js');
 
 function attemptCommandEvaluation(message) {
     var messageContent = message.content;
@@ -73,21 +75,4 @@ function ping(message) {
     message.channel.send('PONG! but better than the other bots...');
 }
 
-function getHumanReadableMentionsList(mentionsList) {
-    var thoseToMention = '';
-    for (i = 0; i < mentionsList.length; i++) {
-        if (mentionsList.length != 1 && i == mentionsList.length - 1) {
-            thoseToMention += ' and '
-        }
-
-        thoseToMention += `<@${mentionsList[i]}>`
-
-        if (mentionsList.length != 1 && i != mentionsList.length - 1 && mentionsList.length != 2) {
-            thoseToMention += ', '
-        }
-    }
-    return thoseToMention;
-}
-
 exports.attemptCommandEvaluation = attemptCommandEvaluation;
-exports.getHumanReadableMentionsList = getHumanReadableMentionsList;
