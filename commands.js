@@ -22,7 +22,7 @@ function addMemberToMentionList(message) {
             return user.id
         });
 
-        var mentionsList = JSON.parse(data);
+        var mentionsList = JSON.parse(data).thoseToMention;
         for (let id of userIds) {
             if (!mentionsList.includes(id)) {
                 mentionsList.push(id);
@@ -44,7 +44,7 @@ function removeMemberFromMentionList(message) {
             return user.id
         });
 
-        var mentionsList = JSON.parse(data);
+        var mentionsList = JSON.parse(data).thoseToMention;
         for (let id of userIds) {
             if (mentionsList.includes(id)) {
                 mentionsList = mentionsList.filter((value, index, array) => {
@@ -64,7 +64,7 @@ function removeMemberFromMentionList(message) {
 
 function showMentionsList(message) {
     readInFile(MENTION_LIST_FILE_PATH, (data) => {
-        var mentionsList = JSON.parse(data);
+        var mentionsList = JSON.parse(data).thoseToMention;
         const embedMessage = new MessageEmbed()
             .setTitle('These suckers are in the list:')
             .setColor('0xffe000')

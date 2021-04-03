@@ -11,7 +11,7 @@ var savedMessage = null;
 
 function inOrOutPing(message) {
     readInFile(MENTION_LIST_FILE_PATH, (data) => {
-        const mentionsList = JSON.parse(data);
+        const mentionsList = JSON.parse(data).thoseToMention;
         const messageToSend = new MessageEmbed()
             .setTitle('Who\'s in?')
             .setColor('0xffe000')

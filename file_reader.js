@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const MENTION_LIST_FILE_PATH = './mentionList.json'
+const MENTION_LIST_FILE_PATH = './settings.json'
 
 function readInFile(filePath, callback) {
     fs.readFile(filePath, 'utf8', (error, data) => {
