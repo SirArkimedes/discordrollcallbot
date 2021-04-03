@@ -22,14 +22,16 @@ function addMemberToMentionList(message) {
             return user.id
         });
 
-        var mentionsList = JSON.parse(data).thoseToMention;
+        var json = JSON.parse(data)
+        var mentionsList = json.thoseToMention;
         for (let id of userIds) {
             if (!mentionsList.includes(id)) {
                 mentionsList.push(id);
             }
         }
 
-        writeFile(MENTION_LIST_FILE_PATH, JSON.stringify(mentionsList), (succeeded) => {
+        json.thoseToMention = mentionsList;
+        writeFile(MENTION_LIST_FILE_PATH, JSON.stringify(json, null, '\t'), (succeeded) => {
             if (succeeded) {
                 message.react('✅');
                 showMentionsList(message);
@@ -44,7 +46,8 @@ function removeMemberFromMentionList(message) {
             return user.id
         });
 
-        var mentionsList = JSON.parse(data).thoseToMention;
+        var json = JSON.parse(data)
+        var mentionsList = json.thoseToMention;
         for (let id of userIds) {
             if (mentionsList.includes(id)) {
                 mentionsList = mentionsList.filter((value, index, array) => {
@@ -53,7 +56,8 @@ function removeMemberFromMentionList(message) {
             }
         }
 
-        writeFile(MENTION_LIST_FILE_PATH, JSON.stringify(mentionsList), (succeeded) => {
+        json.thoseToMention = mentionsList;
+        writeFile(MENTION_LIST_FILE_PATH, JSON.stringify(json, null, '\t'), (succeeded) => {
             if (succeeded) {
                 message.react('✅');
                 showMentionsList(message);
