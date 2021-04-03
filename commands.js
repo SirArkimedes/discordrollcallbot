@@ -32,6 +32,7 @@ function addMemberToMentionList(message) {
         writeFile(MENTION_LIST_FILE_PATH, JSON.stringify(mentionsList), (succeeded) => {
             if (succeeded) {
                 message.react('✅');
+                showMentionsList(message);
             }
         });
     });
@@ -55,6 +56,7 @@ function removeMemberFromMentionList(message) {
         writeFile(MENTION_LIST_FILE_PATH, JSON.stringify(mentionsList), (succeeded) => {
             if (succeeded) {
                 message.react('✅');
+                showMentionsList(message);
             }
         });
     });
