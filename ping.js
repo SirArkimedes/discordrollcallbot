@@ -45,7 +45,7 @@ function inOrOutPing(message) {
                         });
                     })
                     .on('remove', (reaction, user) => {
-                        embededMessage.channel.send(`<@${user.id}> removed their choice!`);
+                        savedMessage.channel.send(`<@${user.id}> removed their choice!`);
 
                         if (reaction.emoji.name === '👍') {
                             thoseThatAreIn = thoseThatAreIn.filter((value, index, array) => {
