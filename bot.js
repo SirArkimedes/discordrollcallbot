@@ -2,7 +2,7 @@ const { Client } = require('discord.js');
 
 const auth = require('./auth.json');
 const commands = require('./commands.js');
-const ping = require('./ping.js');
+const { rollCall } = require('./rollcall.js');
 
 const client = new Client();
 
@@ -12,7 +12,7 @@ client.on('ready', () => {
 
 client.on('message', message => {
   if (message.content === 'w') {
-    ping.inOrOutPing(client);
+    rollCall(client);
   } else {
     commands.attemptCommandEvaluation(message);
   }

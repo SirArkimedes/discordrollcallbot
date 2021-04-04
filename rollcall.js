@@ -9,7 +9,7 @@ var savedMessage = null;
 
 // Public
 
-function inOrOutPing(client) {
+function rollCall(client) {
     readInFile(MENTION_LIST_FILE_PATH, (data) => {
         const settings = JSON.parse(data);
         var channel = null;
@@ -116,5 +116,5 @@ function handleMessageReactions(embededMessage) {
         .on('end', collected => console.log(`Collected ${collected.size} items`));
 }
 
-exports.inOrOutPing = inOrOutPing;
+exports.rollCall = rollCall;
 exports.getHumanReadableMentionsList = getHumanReadableMentionsList;
