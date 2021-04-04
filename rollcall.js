@@ -50,7 +50,7 @@ function rollCall(client, isFromScheduler = false) {
             const mentionsList = settings.thoseToMention;
             const messageToSend = new MessageEmbed()
                 .setTitle('Who\'s in?')
-                .setColor('0xffe000')
+                .setColor('0x9c2322')
                 .setDescription(getDescription());
             const messageContent = `ROLL CALL!\n\n${getHumanReadableMentionsList(mentionsList)} are you in?`;
 
