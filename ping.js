@@ -9,7 +9,7 @@ var savedMessage = null;
 
 // Public
 
-function inOrOutPing(message) {
+function inOrOutPing(channel) {
     readInFile(MENTION_LIST_FILE_PATH, (data) => {
         const mentionsList = JSON.parse(data).thoseToMention;
         const messageToSend = new MessageEmbed()
@@ -18,7 +18,7 @@ function inOrOutPing(message) {
             .setDescription(getDescription());
         const messageContent = `${getHumanReadableMentionsList(mentionsList)} are you in?`;
 
-        message.channel.send({ content: messageContent, embed: messageToSend })
+        channel.send({ content: messageContent, embed: messageToSend })
             .then((embededMessage) => {
                 savedMessage = embededMessage;
 
