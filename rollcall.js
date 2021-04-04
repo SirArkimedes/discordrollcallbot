@@ -49,10 +49,10 @@ function rollCall(client, isFromScheduler = false) {
             thoseThatAreOut = [];
             const mentionsList = settings.thoseToMention;
             const messageToSend = new MessageEmbed()
-                .setTitle('Who\'s in?')
+                .setTitle('📝 Who\'s going to be joining us tonight?')
                 .setColor('0x9c2322')
                 .setDescription(getDescription());
-            const messageContent = `ROLL CALL!\n\n${getHumanReadableMentionsList(mentionsList)} are you in?`;
+            const messageContent = `${getHumanReadableMentionsList(mentionsList)} are you in?`;
 
             channel.send({ content: messageContent, embed: messageToSend })
                 .then(embededMessage => {
