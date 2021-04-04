@@ -19,9 +19,9 @@
 6. Run `node bot.js`.
 
 ### Usage
-1. Once added to your server from the steps in [Setup process](https://github.com/SirArkimedes/discordwhosinbot#setup-process), run `!setChannel` to tell the bot which channel to send the scheduled message.
+1. Once added to your server from the steps in [Setup process](https://github.com/SirArkimedes/discordrollcallbot#setup-process), run `!setChannel` to tell the bot which channel to send the scheduled message.
 * Run `!testRollCall` to see what happens!
-* Puruse the [Commands](https://github.com/SirArkimedes/discordwhosinbot#commands) section to apply any other customizations!
+* Puruse the [Commands](https://github.com/SirArkimedes/discordrollcallbot#commands) section to apply any other customizations!
 
 ### Commands
 * `!scheduledMentionAdd {username(s)}` - Adds an @'d list of users to the roll call list. (Will later mention them in the roll call message if they're in this list.)
