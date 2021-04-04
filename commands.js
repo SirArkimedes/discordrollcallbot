@@ -1,4 +1,4 @@
-const { MessageEmbed, StoreChannel } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 const { readInFile, writeFile, MENTION_LIST_FILE_PATH } = require('./file_reader.js');
 const { getHumanReadableMentionsList } = require('./rollcall.js');
