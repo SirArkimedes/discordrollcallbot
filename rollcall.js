@@ -36,7 +36,7 @@ function rollCall(client, isFromScheduler = false) {
             console.log('Cannot find channel described in settings!');
         } else {
             if (isFromScheduler) {
-                const offsetTime = 30 * 1000;
+                const offsetTime = 60 * 1000;
                 settings.timeToSendMessage += offsetTime;
                 writeFile(MENTION_LIST_FILE_PATH, JSON.stringify(settings, null, '\t'), succeeded => {
                     if (succeeded) {
