@@ -32,7 +32,7 @@
 * `!ping` - Responds with a message to show that the bot is alive and well.
 
 # Thanks!
-* This project was made for those that play DnD.
+* This project was made for those that play DnD (among other things...).
 * Thanks for checking it out!
 
 <p align="center">
