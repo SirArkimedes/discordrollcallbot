@@ -12,12 +12,14 @@ function readInFile(filePath, callback) {
     });
 };
 
-function writeFile(filePath, data, callback) {
+function writeFile(filePath, data, callback = null) {
     fs.writeFile(filePath, data, 'utf8', (error) => {
         if (error) {
             console.log(`Error writing file: ${error}`);
         } else {
-            callback(true);
+            if (callback !== null) {
+                callback(true);
+            }
         }
     });
 };

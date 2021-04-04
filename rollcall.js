@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 
-const { readInFile, MENTION_LIST_FILE_PATH } = require('./file_reader.js');
+const { MENTION_LIST_FILE_PATH, readInFile, writeFile } = require('./file_reader.js');
 
 var thoseThatAreIn = [];
 var thoseThatAreOut = [];
@@ -9,8 +9,18 @@ var savedMessage = null;
 
 // Public
 
-function rollCall(client) {
-    readInFile(MENTION_LIST_FILE_PATH, (data) => {
+function scheduleRollCall(client) {
+    readInFile(MENTION_LIST_FILE_PATH, data => {
+        const settings = JSON.parse(data);
+        const differenceNowToScheduledTime = settings.timeToSendMessage - Date.now();
+        setTimeout(() => {
+            rollCall(client, true);
+        }, differenceNowToScheduledTime);
+    });
+}
+
+function rollCall(client, isFromScheduler = false) {
+    readInFile(MENTION_LIST_FILE_PATH, data => {
         const settings = JSON.parse(data);
         var channel = null;
 
@@ -25,12 +35,24 @@ function rollCall(client) {
         if (channel === null) {
             console.log('Cannot find channel described in settings!');
         } else {
+            if (isFromScheduler) {
+                const offsetTime = 30 * 1000;
+                settings.timeToSendMessage += offsetTime;
+                writeFile(MENTION_LIST_FILE_PATH, JSON.stringify(settings, null, '\t'), succeeded => {
+                    if (succeeded) {
+                        scheduleRollCall(client);
+                    }
+                });
+            }
+
+            thoseThatAreIn = [];
+            thoseThatAreOut = [];
             const mentionsList = settings.thoseToMention;
             const messageToSend = new MessageEmbed()
                 .setTitle('Who\'s in?')
                 .setColor('0xffe000')
                 .setDescription(getDescription());
-            const messageContent = `${getHumanReadableMentionsList(mentionsList)} are you in?`;
+            const messageContent = `ROLL CALL!\n\n${getHumanReadableMentionsList(mentionsList)} are you in?`;
 
             channel.send({ content: messageContent, embed: messageToSend })
                 .then(embededMessage => {
@@ -116,5 +138,6 @@ function handleMessageReactions(embededMessage) {
         .on('end', collected => console.log(`Collected ${collected.size} items`));
 }
 
+exports.scheduleRollCall = scheduleRollCall;
 exports.rollCall = rollCall;
 exports.getHumanReadableMentionsList = getHumanReadableMentionsList;
