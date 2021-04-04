@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, StoreChannel } = require('discord.js');
 
 const { readInFile, writeFile, MENTION_LIST_FILE_PATH } = require('./file_reader.js');
 const { getHumanReadableMentionsList } = require('./ping.js');
@@ -11,6 +11,8 @@ function attemptCommandEvaluation(message) {
         removeMemberFromMentionList(message);
     } else if (messageContent.startsWith('!showMentionsList')) {
         showMentionsList(message);
+    } else if (messageContent.startsWith('!setChannel')) {
+        setChannel(message);
     } else if (messageContent.startsWith('!ping')) {
         ping(message);
     }
@@ -74,6 +76,19 @@ function showMentionsList(message) {
             .setColor('0xffe000')
             .setDescription(getHumanReadableMentionsList(mentionsList));
         message.channel.send(embedMessage);
+    });
+}
+
+function setChannel(message) {
+    readInFile(MENTION_LIST_FILE_PATH, data => {
+        var settings = JSON.parse(data);
+        settings.channelToSendTo = message.channel.id;
+        
+        writeFile(MENTION_LIST_FILE_PATH, JSON.stringify(settings, null, '\t'), succeeded => {
+            if (succeeded) {
+                message.react('✅');
+            }
+        });
     });
 }
 
