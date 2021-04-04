@@ -1,0 +1,10 @@
+{
+    "name": "discord-roll-call-bot",
+    "version": "1.0.0",
+    "description": "Regularly scheduled DnD? Party? Figure out who is going and who isn't with this bot.",
+    "main": "bot.js",
+    "author": "Andrew Robinson & Jonas Smith",
+    "dependencies": {
+      "discord.js": "^12.5.2"
+    }
+  }
