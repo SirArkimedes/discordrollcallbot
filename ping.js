@@ -24,20 +24,19 @@ function inOrOutPing(client) {
 
         if (channel === null) {
             console.log('Cannot find channel described in settings!');
-            return; // EARLY RETURN.
+        } else {
+            const mentionsList = settings.thoseToMention;
+            const messageToSend = new MessageEmbed()
+                .setTitle('Who\'s in?')
+                .setColor('0xffe000')
+                .setDescription(getDescription());
+            const messageContent = `${getHumanReadableMentionsList(mentionsList)} are you in?`;
+
+            channel.send({ content: messageContent, embed: messageToSend })
+                .then(embededMessage => {
+                    handleMessageReactions(embededMessage);
+                });
         }
-
-        const mentionsList = settings.thoseToMention;
-        const messageToSend = new MessageEmbed()
-            .setTitle('Who\'s in?')
-            .setColor('0xffe000')
-            .setDescription(getDescription());
-        const messageContent = `${getHumanReadableMentionsList(mentionsList)} are you in?`;
-
-        channel.send({ content: messageContent, embed: messageToSend })
-            .then(embededMessage => {
-                handleMessageReactions(embededMessage);
-            });
     })
 };
 
