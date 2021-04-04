@@ -1,7 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 
 const { readInFile, writeFile, MENTION_LIST_FILE_PATH } = require('./file_reader.js');
-const { getHumanReadableMentionsList } = require('./rollcall.js');
+const { getHumanReadableMentionsList, rollCall } = require('./rollcall.js');
 
 function attemptCommandEvaluation(message) {
     var messageContent = message.content;
@@ -13,6 +13,8 @@ function attemptCommandEvaluation(message) {
         showMentionsList(message);
     } else if (messageContent.startsWith('!setChannel')) {
         setChannel(message);
+    } else if (messageContent.startsWith('!testRollCall')) {
+        testRollCall(message);
     } else if (messageContent.startsWith('!ping')) {
         ping(message);
     }
@@ -90,6 +92,10 @@ function setChannel(message) {
             }
         });
     });
+}
+
+function testRollCall(message) {
+    rollCall(message.client);
 }
 
 function ping(message) {

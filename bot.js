@@ -2,7 +2,7 @@ const { Client } = require('discord.js');
 
 const auth = require('./auth.json');
 const commands = require('./commands.js');
-const { rollCall, scheduleRollCall } = require('./rollcall.js');
+const { scheduleRollCall } = require('./rollcall.js');
 
 const client = new Client();
 
@@ -12,11 +12,7 @@ client.on('ready', () => {
 });
 
 client.on('message', message => {
-  if (message.content === 'w') {
-    rollCall(client);
-  } else {
-    commands.attemptCommandEvaluation(message);
-  }
+  commands.attemptCommandEvaluation(message);
 });
 
 client.login(auth.token);
