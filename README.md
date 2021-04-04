@@ -1,6 +1,6 @@
-# Discord Roll Call Bot
+# 📝 Discord Roll Call Bot
 * Tired of always asking if a group of people are down to play that night? We were too.
-* Introducing Discord Roll Call Bot! A one-stop-shop for asking your friends if they're down at that same particular date and time.
+* Introducing Discord Roll Call Bot! 📝 A one-stop-shop for asking your friends if they're down at that same particular date and time.
 
 # How to run
 ### Requirement
