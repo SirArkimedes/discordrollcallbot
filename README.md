@@ -26,7 +26,7 @@
 ### Commands
 * `!scheduledMentionAdd {username(s)}` - Adds an @'d list of users to the roll call list. (Will later mention them in the roll call message if they're in this list.)
 * `!scheduledMentionRemove {username(s)}` - Removes an @'d list of users to the roll call list.
-* `!showMentionsList` - Displays who is in the mention list.
+* `!showMentionsList` - Displays who gets mentioned on the roll call message.
 * `!setChannel` - Sets the channel at which to send the scheduled roll call to.
 * `!testRollCall` - Sends a non-scheduled roll call message.
 * `!ping` - Responds with a message to show that the bot is alive and well.
