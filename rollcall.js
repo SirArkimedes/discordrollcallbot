@@ -2,6 +2,7 @@ const { MessageEmbed } = require('discord.js');
 
 const { MENTION_LIST_FILE_PATH, readInFile, writeFile } = require('./file_reader.js');
 
+var mentionsList = [];
 var thoseThatAreIn = [];
 var thoseThatAreOut = [];
 
@@ -47,7 +48,7 @@ function rollCall(client, isFromScheduler = false) {
 
             thoseThatAreIn = [];
             thoseThatAreOut = [];
-            const mentionsList = settings.thoseToMention;
+            mentionsList = settings.thoseToMention;
             const messageToSend = new MessageEmbed()
                 .setTitle('📝 Who\'s going to be joining us tonight?')
                 .setColor('0x9c2322')
@@ -82,6 +83,17 @@ function getHumanReadableMentionsList(mentionsList) {
 
 function getDescription() {
     var description = 'React to this message to mark that you\'re in or out for tonight!';
+
+    var thoseThatHaveNotResponded = [];
+    for (id of mentionsList) {
+        if (!thoseThatAreIn.includes(id) && !thoseThatAreOut.includes(id)) {
+            thoseThatHaveNotResponded.push(id);
+        }
+    }
+    if (thoseThatHaveNotResponded.length > 0) {
+        description += `\n\nThose that have not responded: \n${getHumanReadableMentionsList(thoseThatHaveNotResponded)}`
+    }
+
     if (thoseThatAreIn.length > 0) {
         description += `\n\nThose in: 🙋\n${getHumanReadableMentionsList(thoseThatAreIn)}`
     }
