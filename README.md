@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="Rounded Logo.png" alt="icon">
+</p>
+
 # 📝 Discord Roll Call Bot
 * Tired of always asking if a group of people are down to play that night? We were too.
 * Introducing Discord Roll Call Bot! 📝 A one-stop-shop for asking your friends if they're down at that same particular date and time.
