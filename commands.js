@@ -75,7 +75,7 @@ function showMentionsList(message) {
         var mentionsList = JSON.parse(data).thoseToMention;
         const embedMessage = new MessageEmbed()
             .setTitle('These suckers are in the list:')
-            .setColor('0x9c2322')
+            .setColor('0xccff33')
             .setDescription(getHumanReadableMentionsList(mentionsList));
         message.channel.send(embedMessage);
     });

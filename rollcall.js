@@ -51,7 +51,7 @@ function rollCall(client, isFromScheduler = false) {
             mentionsList = settings.thoseToMention;
             const messageToSend = new MessageEmbed()
                 .setTitle('📝 Who\'s going to be joining us tonight?')
-                .setColor('0x9c2322')
+                .setColor('0xccff33')
                 .setDescription(getDescription());
             const messageContent = `${getHumanReadableMentionsList(mentionsList)} are you in?`;
 
