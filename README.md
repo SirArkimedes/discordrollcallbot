@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="Rounded Logo.png" alt="icon">
+  <img src="Rounded Logo.png" alt="icon" width="300" height="300">
 </p>
 
 # 📝 Discord Roll Call Bot
