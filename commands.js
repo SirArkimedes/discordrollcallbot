@@ -1,7 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 
 const { readInFile, writeFile, MENTION_LIST_FILE_PATH } = require('./file_reader.js');
-const { getHumanReadableMentionsList, rollCall } = require('./rollcall.js');
+const { getHumanReadableMentionsList, rollCall, scheduleRollCall } = require('./rollcall.js');
 
 function attemptCommandEvaluation(message) {
     var messageContent = message.content;
@@ -15,6 +15,10 @@ function attemptCommandEvaluation(message) {
         setChannel(message);
     } else if (messageContent.startsWith('!testRollCall')) {
         testRollCall(message);
+    } else if (messageContent.startsWith('!skip')) {
+        skip(message);
+    } else if (messageContent.startsWith('!undoSkip')) {
+        undoSkip(message);
     } else if (messageContent.startsWith('!ping')) {
         ping(message);
     }
@@ -96,6 +100,36 @@ function setChannel(message) {
 
 function testRollCall(message) {
     rollCall(message.client);
+}
+
+function skip(message) {
+    readInFile(MENTION_LIST_FILE_PATH, data => {
+        var settings = JSON.parse(data);
+
+        const offsetTime = 604800000; // One week
+        settings.timeToSendMessage += offsetTime;
+        writeFile(MENTION_LIST_FILE_PATH, JSON.stringify(settings, null, '\t'), succeeded => {
+            if (succeeded) {
+                scheduleRollCall(message.client);
+                message.channel.send('Skipping this week...');
+            }
+        });
+    });
+}
+
+function undoSkip(message) {
+    readInFile(MENTION_LIST_FILE_PATH, data => {
+        var settings = JSON.parse(data);
+
+        const offsetTime = 604800000; // One week
+        settings.timeToSendMessage -= offsetTime;
+        writeFile(MENTION_LIST_FILE_PATH, JSON.stringify(settings, null, '\t'), succeeded => {
+            if (succeeded) {
+                scheduleRollCall(message.client);
+                message.channel.send('Undoing the previous skip...');
+            }
+        });
+    });
 }
 
 function ping(message) {

@@ -7,14 +7,19 @@ var thoseThatAreIn = [];
 var thoseThatAreOut = [];
 
 var savedMessage = null;
+var timeoutId = null;
 
 // Public
 
 function scheduleRollCall(client) {
     readInFile(MENTION_LIST_FILE_PATH, data => {
+        if (timeoutId != null) {
+            clearTimeout(timeoutId);
+        }
+
         const settings = JSON.parse(data);
         const differenceNowToScheduledTime = settings.timeToSendMessage - Date.now();
-        setTimeout(() => {
+        timeoutId = setTimeout(() => {
             rollCall(client, true);
         }, differenceNowToScheduledTime);
     });
