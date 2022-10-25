@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 const { MENTION_LIST_FILE_PATH, readInFile, writeFile } = require('./file_reader.js');
 
@@ -49,13 +49,13 @@ function rollCall(client, isFromScheduler = false) {
             thoseThatAreIn = [];
             thoseThatAreOut = [];
             mentionsList = settings.thoseToMention;
-            const messageToSend = new MessageEmbed()
+            const messageToSend = new EmbedBuilder()
                 .setTitle('📝 Who\'s going to be joining us tonight?')
                 .setColor('0xccff33')
                 .setDescription(getDescription());
             const messageContent = `${getHumanReadableMentionsList(mentionsList)} are you in?`;
 
-            channel.send({ content: messageContent, embed: messageToSend })
+            channel.send({ content: messageContent, embeds: [messageToSend] })
                 .then(embededMessage => {
                     handleMessageReactions(embededMessage);
                 });
@@ -112,42 +112,49 @@ function handleMessageReactions(embededMessage) {
     const filter = (reaction, user) => {
         return ['👍', '👎'].includes(reaction.emoji.name) && user.id !== savedMessage.author.id;
     };
-    savedMessage.createReactionCollector(filter, { time: 86400000, dispose: true }) // One day in milliseconds
-        .on('collect', (reaction, user) => {
-            if (reaction.emoji.name === '👍') {
-                savedMessage.channel.send(`🙋 <@${user.id}> is in!`);
-                thoseThatAreIn.push(user.id);
-            } else if (reaction.emoji.name === '👎') {
-                savedMessage.channel.send(`😢 <@${user.id}> is out!`);
-                thoseThatAreOut.push(user.id);
-            }
 
-            const editedEmbed = new MessageEmbed(savedMessage.embeds[0]);
-            editedEmbed.description = getDescription();
-            savedMessage.edit(editedEmbed).then(editedMessage => {
-                savedMessage = editedMessage
+    const collector = savedMessage.createReactionCollector({ filter, time: 86400000, dispose: true }) // One day in milliseconds
+    collector.on('collect', (reaction, user) => {
+        console.log(`${user.tag} reacted with "${reaction.emoji.name}".`);
+
+        if (reaction.emoji.name === '👍') {
+            savedMessage.channel.send(`🙋 <@${user.id}> is in!`);
+            thoseThatAreIn.push(user.id);
+        } else if (reaction.emoji.name === '👎') {
+            savedMessage.channel.send(`😢 <@${user.id}> is out!`);
+            thoseThatAreOut.push(user.id);
+        }
+
+        const editedEmbed = EmbedBuilder.from(savedMessage.embeds[0]);
+        editedEmbed.setDescription(getDescription());
+        
+        reaction.message.edit({ embeds: [editedEmbed] }).then(editedMessage => {
+            savedMessage = editedMessage
+        });
+    })
+    collector.on('remove', (reaction, user) => {
+        savedMessage.channel.send(`<@${user.id}> removed their choice!`);
+
+        if (reaction.emoji.name === '👍') {
+            thoseThatAreIn = thoseThatAreIn.filter((value, index, array) => {
+                return value !== user.id;
             });
-        })
-        .on('remove', (reaction, user) => {
-            savedMessage.channel.send(`<@${user.id}> removed their choice!`);
-
-            if (reaction.emoji.name === '👍') {
-                thoseThatAreIn = thoseThatAreIn.filter((value, index, array) => {
-                    return value !== user.id;
-                });
-            } else if (reaction.emoji.name === '👎') {
-                thoseThatAreOut = thoseThatAreOut.filter((value, index, array) => {
-                    return value !== user.id;
-                });
-            }
-
-            const editedEmbed = new MessageEmbed(savedMessage.embeds[0]);
-            editedEmbed.description = getDescription();
-            savedMessage.edit(editedEmbed).then(editedMessage => {
-                savedMessage = editedMessage
+        } else if (reaction.emoji.name === '👎') {
+            thoseThatAreOut = thoseThatAreOut.filter((value, index, array) => {
+                return value !== user.id;
             });
-        })
-        .on('end', collected => console.log(`Collected ${collected.size} items`));
+        }
+
+        const editedEmbed = EmbedBuilder.from(savedMessage.embeds[0]);
+        editedEmbed.setDescription(getDescription());
+
+        reaction.message.edit({ embeds: [editedEmbed] }).then(editedMessage => {
+            savedMessage = editedMessage
+        });
+    })
+    collector.on('end', collected => {
+        console.log(`Collected ${collected.size} items`)
+    });
 }
 
 exports.scheduleRollCall = scheduleRollCall;
