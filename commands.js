@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 const { readInFile, writeFile, MENTION_LIST_FILE_PATH } = require('./file_reader.js');
 const { getHumanReadableMentionsList, rollCall } = require('./rollcall.js');
@@ -73,11 +73,11 @@ function removeMemberFromMentionList(message) {
 function showMentionsList(message) {
     readInFile(MENTION_LIST_FILE_PATH, (data) => {
         var mentionsList = JSON.parse(data).thoseToMention;
-        const embedMessage = new MessageEmbed()
+        const embedMessage = new EmbedBuilder()
             .setTitle('These suckers are in the list:')
             .setColor('0xccff33')
             .setDescription(getHumanReadableMentionsList(mentionsList));
-        message.channel.send(embedMessage);
+        message.channel.send({ embeds: [embedMessage] });
     });
 }
 
