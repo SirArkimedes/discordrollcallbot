@@ -67,7 +67,7 @@ function getHumanReadableMentionsList(mentionsList) {
     var thoseToMention = '';
     for (i = 0; i < mentionsList.length; i++) {
         if (mentionsList.length != 1 && i == mentionsList.length - 1) {
-            thoseToMention += ' and '
+            thoseToMention += 'and '
         }
 
         thoseToMention += `<@${mentionsList[i]}>`
